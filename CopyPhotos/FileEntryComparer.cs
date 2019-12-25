@@ -16,12 +16,6 @@ namespace CopyPhotos
                 return false;
             }
 
-            var modified = new ModifiedComparer();
-            if (!modified.Equals(x, y))
-            {
-                return false;
-            }
-
             var hash = new HashComparer();
             if (!hash.Equals(x, y))
             {
@@ -37,9 +31,6 @@ namespace CopyPhotos
 
             var name = new NameComparer();
             result += name.GetHashCode(obj);
-
-            var modified = new ModifiedComparer();
-            result += modified.GetHashCode(obj);
 
             var hash = new HashComparer();
             result += hash.GetHashCode(obj);
