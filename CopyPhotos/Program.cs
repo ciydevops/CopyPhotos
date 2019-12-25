@@ -5,9 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Xml;
 using System.Xml.Serialization;
 
 namespace CopyPhotos
@@ -158,23 +155,11 @@ namespace CopyPhotos
             File.SetAttributes(filePath, FileAttributes.Hidden);
         }
 
-        private static string GetOrCreateAppFolder(string appName)
-        {
-            string path = Application.LocalUserAppDataPath;
-
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
-
-            return path;
-        }
-
         private static void CreateHash(FileEntry entry)
         {
             Console.WriteLine("Hashing: {0}", entry.Path);
 
-            RIPEMD160 myRIPEMD160 = RIPEMD160Managed.Create();
+            MD5 hashalg = MD5.Create();
             byte[] hashValue;
 
             try
@@ -183,7 +168,7 @@ namespace CopyPhotos
                 using (FileStream fileStream = info.Open(FileMode.Open))
                 {
                     fileStream.Position = 0;
-                    hashValue = myRIPEMD160.ComputeHash(fileStream);
+                    hashValue = hashalg.ComputeHash(fileStream);
                 }
             }
             catch (Exception)
