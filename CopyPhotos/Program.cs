@@ -86,7 +86,7 @@ namespace CopyPhotos
         private static string GetModifiedText(FileEntry entry)
         {
             var modified = DateTime.Parse(entry.Modified, null, DateTimeStyles.RoundtripKind);
-            return modified.ToString("yyyy-MM-dd");
+            return modified.ToString("yyyyMMdd");
         }
 
         private static void UpdateFileDb(string photosPath, ref FileDb fileDb)
