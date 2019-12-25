@@ -14,7 +14,15 @@ namespace CopyPhotos
 {
     class Program
     {
-        private const string pattern = "*.jpg";
+        private static string[] patterns = {
+            "*.jpg",
+            "*.avi",
+            "*.ts",
+            "*.m2ts",
+            "*.mp4",
+            "*.mp3",
+            "*.mpeg",
+        };
 
         static void Main(string[] args)
         {
@@ -84,7 +92,7 @@ namespace CopyPhotos
         private static void UpdateFileDb(string photosPath, ref FileDb fileDb)
         {
             var oldFileDb = fileDb;
-            var newFiles = GetAllFileEntriesRecursive(photosPath, pattern);
+            var newFiles = GetAllFileEntriesRecursive(photosPath, patterns);
             var newFileDb = new FileDb();
 
             foreach (FileEntry newEntry in newFiles)
@@ -220,9 +228,9 @@ namespace CopyPhotos
             }
         }
 
-        private static IEnumerable<FileEntry> GetAllFileEntriesRecursive(string directory, string pattern)
+        private static IEnumerable<FileEntry> GetAllFileEntriesRecursive(string directory, string[] patterns)
         {
-            foreach (FileInfo file in GetAllFilesRecursive(directory, pattern))
+            foreach (FileInfo file in GetAllFilesRecursive(directory, patterns))
             {
                 var entry = new FileEntry();
 
@@ -241,11 +249,14 @@ namespace CopyPhotos
             }
         }
 
-        private static IEnumerable<FileInfo> GetAllFilesRecursive(string directory, string pattern)
+        private static IEnumerable<FileInfo> GetAllFilesRecursive(string directory, string[] patterns)
         {
-            foreach (string file in Directory.GetFiles(directory, pattern, SearchOption.AllDirectories))
+            foreach (string pattern in patterns)
             {
-                yield return new FileInfo(file);
+                foreach (string file in Directory.GetFiles(directory, pattern, SearchOption.AllDirectories))
+                {
+                    yield return new FileInfo(file);
+                }
             }
         }
     }
